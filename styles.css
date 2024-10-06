@@ -1,6 +1,6 @@
 body {
     font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -14,13 +14,20 @@ body {
 
 #game {
     text-align: center;
-    width: 90%;
-    max-width: 800px;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1056px;
+    padding: 18px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.1);
     margin-top: 0;
+    min-height: 75vh;
+}
+
+h1, h2 {
+    font-size: 1.5em;
+    margin: 5px 0 10px 0;
 }
 
 #question-container, #start-screen {
@@ -30,8 +37,9 @@ body {
 
 .options {
     display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+    justify-content: center;
+    gap: 40px; 
+    margin: 40px 0;
 }
 
 .option {
@@ -62,7 +70,7 @@ body {
 #game-controls {
     position: relative;
     margin-top: 20px;
-    height: 80px; /* Kiinteä korkeus kontrollialueelle */
+    height: 80px;
 }
 
 #check-button, #next-arrow {
@@ -72,7 +80,7 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#check-button, #start-button {
+#check-button, #start-button, button[onclick="restartGame()"] {
     font-family: 'Quicksand', sans-serif;
     padding: 15px 30px;
     background-color: transparent;
@@ -80,8 +88,9 @@ body {
     border: 3px solid black;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 120%;
+    text-transform: uppercase;
 }
 
 #next-arrow {
@@ -115,33 +124,8 @@ body {
     margin: 0 5px;
 }
 
-h1 {
-    font-size: 200%;
-    margin: 5px 0;
-    margin-top: 0px;
-}
-
-h2 {
-    font-size: 160%;
-    margin: 15px 0;
-}
-
-button[onclick="restartGame()"] {
-    margin-top: 30px;
-    padding: 15px 30px;
-    background-color: transparent;
-    color: black;
-    border: 3px solid black;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 120%;
-}
-
 @media (max-width: 600px) {
-    #check-button, #start-button {
+    #check-button, #start-button, button[onclick="restartGame()"] {
         padding: 10px 20px;
         font-size: 100%;
     }
