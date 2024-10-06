@@ -23,7 +23,7 @@ function startGame() {
     currentQuestions = getRandomQuestions(5);
     loadQuestion();
     playAudio('valitse.mp3', () => {
-        playAudio(currentQuestions[currentQuestion].audio);
+        playQuestionAudio();
     });
 }
 
@@ -56,6 +56,13 @@ function loadQuestion() {
     });
     
     updateCheckButtonState();
+}
+
+function playQuestionAudio() {
+    const question = currentQuestions[currentQuestion];
+    const audioFiles = question.audio;
+    const randomAudioFile = Array.isArray(audioFiles) ? audioFiles[Math.floor(Math.random() * audioFiles.length)] : audioFiles;
+    playAudio(randomAudioFile);
 }
 
 function selectOption(option) {
@@ -113,24 +120,19 @@ function nextQuestion() {
         showResult();
     } else {
         loadQuestion();
-        playAudio(currentQuestions[currentQuestion].audio);
+        playQuestionAudio();
     }
 }
 
 function showResult() {
     const questionContainer = document.getElementById('question-container');
-    if (questionContainer) {
-        questionContainer.innerHTML = `
-            <h1>NELJÄ VUODENAIKAA</h1>
-            <p id="result">SAIT ${correctAnswers} / ${currentQuestions.length} OIKEIN</p>
-            <div id="final-stars-container">${'<img src="tahti.avif" alt="Star" class="star-icon">'.repeat(correctAnswers)}</div>
-            <button onclick="restartGame()">PELAA UUDELLEEN</button>
-        `;
-    }
-    const starsContainer = document.getElementById('stars-container');
-    if (starsContainer) {
-        starsContainer.style.display = 'none';
-    }
+    questionContainer.innerHTML = `
+        <h1>NELJÄ VUODENAIKAA</h1>
+        <p id="result">SAIT ${correctAnswers} / ${currentQuestions.length} OIKEIN</p>
+        <div id="final-stars-container">${'<img src="tahti.avif" alt="Star" class="star-icon">'.repeat(correctAnswers)}</div>
+        <button onclick="restartGame()">PELAA UUDELLEEN</button>
+    `;
+    document.getElementById('stars-container').style.display = 'none';
 }
 
 function restartGame() {
@@ -142,29 +144,24 @@ function restartGame() {
     currentQuestions = getRandomQuestions(5);
     
     const questionContainer = document.getElementById('question-container');
-    if (questionContainer) {
-        questionContainer.innerHTML = `
-            <h1>NELJÄ VUODENAIKAA</h1>
-            <div class="options">
-                <img id="option1" class="option">
-                <img id="option2" class="option">
-            </div>
-            <div id="game-controls">
-                <button id="check-button" onclick="checkAnswer()">TARKISTA</button>
-                <img id="next-arrow" src="nuoli.png" onclick="nextQuestion()">
-            </div>
-        `;
-    }
+    questionContainer.innerHTML = `
+        <h2>VALITSE OIKEA KUVA:</h2>
+        <div class="options">
+            <img id="option1" class="option" onclick="selectOption(1)">
+            <img id="option2" class="option" onclick="selectOption(2)">
+        </div>
+        <div id="game-controls">
+            <button id="check-button" onclick="checkAnswer()">TARKISTA</button>
+            <img id="next-arrow" src="nuoli.png" onclick="nextQuestion()">
+        </div>
+    `;
     
-    const starsContainer = document.getElementById('stars-container');
-    if (starsContainer) {
-        starsContainer.innerHTML = '';
-        starsContainer.style.display = 'block';
-    }
+    document.getElementById('stars-container').innerHTML = '';
+    document.getElementById('stars-container').style.display = 'block';
     
     loadQuestion();
     playAudio('valitse.mp3', () => {
-        playAudio(currentQuestions[currentQuestion].audio);
+        playQuestionAudio();
     });
 }
 
