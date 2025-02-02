@@ -34,20 +34,10 @@ function getRandomQuestions(count) {
 
 function loadQuestion() {
     const question = currentQuestions[currentQuestion];
-    const option1 = document.getElementById('option1');
-    const option2 = document.getElementById('option2');
-    if (option1 && option2) {
-        option1.src = question.img1;
-        option2.src = question.img2;
-        option1.onclick = () => selectOption(1);
-        option2.onclick = () => selectOption(2);
-    }
-    const checkButton = document.getElementById('check-button');
-    const nextArrow = document.getElementById('next-arrow');
-    if (checkButton && nextArrow) {
-        checkButton.style.display = 'block';
-        nextArrow.style.display = 'none';
-    }
+    document.getElementById('option1').src = question.img1;
+    document.getElementById('option2').src = question.img2;
+    document.getElementById('check-button').style.display = 'block';
+    document.getElementById('next-arrow').style.display = 'none';
     checkButtonClicked = false;
     selectedOption = 0;
     
@@ -60,9 +50,13 @@ function loadQuestion() {
 
 function playQuestionAudio() {
     const question = currentQuestions[currentQuestion];
-    const audioFiles = question.audio;
-    const randomAudioFile = Array.isArray(audioFiles) ? audioFiles[Math.floor(Math.random() * audioFiles.length)] : audioFiles;
-    playAudio(randomAudioFile);
+    playAudio(question.audio);
+}
+
+function replayCurrentAudio() {
+    if (currentQuestions[currentQuestion]) {
+        playQuestionAudio();
+    }
 }
 
 function selectOption(option) {
@@ -76,10 +70,8 @@ function selectOption(option) {
 
 function updateCheckButtonState() {
     const checkButton = document.getElementById('check-button');
-    if (checkButton) {
-        checkButton.disabled = selectedOption === 0;
-        checkButton.classList.toggle('disabled', selectedOption === 0);
-    }
+    checkButton.disabled = selectedOption === 0;
+    checkButton.classList.toggle('disabled', selectedOption === 0);
 }
 
 function checkAnswer() {
@@ -105,9 +97,7 @@ function checkAnswer() {
 
 function updateStars() {
     const starsContainer = document.getElementById('stars-container');
-    if (starsContainer) {
-        starsContainer.innerHTML = '<img src="tahti.png" alt="Star" class="star-icon">'.repeat(correctAnswers);
-    }
+    starsContainer.innerHTML = '<img src="tahti.png" alt="Star" class="star-icon">'.repeat(correctAnswers);
 }
 
 function nextQuestion() {
@@ -146,6 +136,9 @@ function restartGame() {
     const questionContainer = document.getElementById('question-container');
     questionContainer.innerHTML = `
         <h2>VALITSE OIKEA KUVA:</h2>
+        <button id="replay-sound" class="replay-button">
+            <img src="kaiutin.png" alt="Toista ääni">
+        </button>
         <div class="options">
             <img id="option1" class="option" onclick="selectOption(1)">
             <img id="option2" class="option" onclick="selectOption(2)">
@@ -156,6 +149,7 @@ function restartGame() {
         </div>
     `;
     
+    document.getElementById('replay-sound').addEventListener('click', replayCurrentAudio);
     document.getElementById('stars-container').innerHTML = '';
     document.getElementById('stars-container').style.display = 'block';
     
@@ -183,11 +177,9 @@ function playAudio(src, callback) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const startButton = document.getElementById('start-button');
-    if (startButton) {
-        startButton.addEventListener('click', startGame);
-    }
-
+    document.getElementById('start-button').addEventListener('click', startGame);
+    document.getElementById('replay-sound').addEventListener('click', replayCurrentAudio);
+    
     document.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowRight' && document.getElementById('next-arrow').style.display !== 'none') {
             nextQuestion();

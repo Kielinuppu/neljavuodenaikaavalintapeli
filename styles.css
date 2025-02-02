@@ -93,6 +93,27 @@ h1, h2 {
     text-transform: uppercase;
 }
 
+.replay-button {
+    display: block;
+    margin: 10px auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+}
+
+.replay-button img {
+    width: 80%;
+    height: 80%;
+}
+
+.replay-button:hover {
+    transform: scale(1.1);
+}
+
 #next-arrow {
     width: 70px;
     height: auto;
